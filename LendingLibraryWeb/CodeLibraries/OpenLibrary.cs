@@ -11,7 +11,6 @@ public static class OpenLibrary
 
         var author = GetAuthorAsync(openLibraryBook.authors[0].key);
         
-        
         var book = new Book();
 
         return book;
@@ -80,7 +79,7 @@ public class RemoteIds
     public string wikidata { get; set; }
     public string isni { get; set; }
     public string viaf { get; set; }
-}
+} 
 
 public class Link
 {

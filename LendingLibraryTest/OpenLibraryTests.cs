@@ -1,4 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using LendingLibraryWeb.CodeLibraries;
+using System.Threading.Tasks;
 
 namespace LendingLibraryTest;
 
@@ -6,22 +8,31 @@ namespace LendingLibraryTest;
 public class OpenLibraryTests
 {
     [TestMethod]
-    public void GetOpenLibraryBookTest()
+    public async Task GetOpenLibraryBookTestIsbn10()
     {
+        int isbn = 0140328726;
+        OpenLibraryBook olBook = await OpenLibrary.GetOpenLibraryBookAsync(isbn);
+
+        Assert.AreEqual("Fantastic Mr. Fox", olBook.title);
+
     }
 
-    [TestMethod]
-    public void GetAuthorTest()
-    {
-    }
+    // public void GetOpenLibraryBookTestIsbn13()
+    // {
+    // }
 
-    [TestMethod]
-    public void BookMapperTest()
-    {
-    }
+    // [TestMethod]
+    // public void GetAuthorTest()
+    // {
+    // }
 
-    [TestMethod]
-    public void GetBookTest()
-    {
-    }
+    // [TestMethod]
+    // public void BookMapperTest()
+    // {
+    // }
+
+    // [TestMethod]
+    // public void GetBookTest()
+    // {
+    // }
 }
