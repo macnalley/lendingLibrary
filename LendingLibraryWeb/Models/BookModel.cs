@@ -17,13 +17,4 @@ public class BookModel
     }
     public bool IsAvailable { get; set; }
     public string? ErrorMessage { get; set; }
-
-    public void Map(Book book)
-    {
-        Title = book.Title;
-        Author = $"{book.AuthorFirstName} {book.AuthorLastName}";
-        Isbn10 = book.Isbn10;
-        Isbn13 = book.Isbn13;
-        IsAvailable = book.IsAvailable;
-    }
 }
