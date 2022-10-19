@@ -140,11 +140,6 @@ public static class OpenLibrary
         public Created created { get; set; }
         public LastModified last_modified { get; set; }
 
-        public class Type
-        {
-            public string key { get; set; }
-        }
-
         public class Work
         {
             public string key { get; set; }
@@ -182,6 +177,11 @@ public static class OpenLibrary
     {
         public string type { get; set; }
         public DateTime value { get; set; }
+    }
+
+    public class Type
+    {
+        public string key { get; set; }
     }
 
 }
