@@ -10,10 +10,4 @@ public class Book
     public string Isbn10 { get; set; }
     public string Isbn13 { get; set; }
     public bool IsAvailable { get; set; } = true;
-
-
-    public void Map(OpenLibraryBook openLibraryBook)
-    {
-        
-    }
 }

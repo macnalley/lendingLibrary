@@ -16,7 +16,7 @@ public class OpenLibraryTests
     [TestMethod]
     public async Task GetOpenLibraryBookTestIsbn10()
     {
-        OpenLibraryBook olBook = await OpenLibrary.GetOpenLibraryBookAsync(_isbn10);
+        OpenLibrary.OpenLibraryBook olBook = await OpenLibrary.GetOpenLibraryBookAsync(_isbn10);
 
         Assert.AreEqual("Fantastic Mr. Fox", olBook.title);
     }
@@ -24,7 +24,7 @@ public class OpenLibraryTests
     [TestMethod]
     public async Task GetOpenLibraryBookTestIsbn13()
     {
-        OpenLibraryBook olBook = await OpenLibrary.GetOpenLibraryBookAsync(_isbn13);
+        OpenLibrary.OpenLibraryBook olBook = await OpenLibrary.GetOpenLibraryBookAsync(_isbn13);
 
         Assert.AreEqual("Fantastic Mr. Fox", olBook.title);
     }
@@ -34,16 +34,16 @@ public class OpenLibraryTests
     {
         
         // Arranging mock book with Roald Dahl's key.
-        var olBook = new OpenLibraryBook
+        var olBook = new OpenLibrary.OpenLibraryBook
         {
-            authors = new List<Author>
+            authors = new List<OpenLibrary.Author>
             {
-                new Author { key = "/authors/OL34184A" }
+                new OpenLibrary.Author { key = "/authors/OL34184A" }
             }
         };
 
         // Act
-        Author author = await OpenLibrary.GetAuthorAsync(olBook);
+        OpenLibrary.Author author = await OpenLibrary.GetAuthorAsync(olBook);
 
         // Assert
         Assert.AreEqual("Roald Dahl", author.name);
