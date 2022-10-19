@@ -53,11 +53,21 @@ public static class OpenLibrary
     {
         string key = openLibraryBook.authors[0].key;
         
-        var client = new HttpClient();
+        var sb = new StringBuilder();
+        
+        using (var client = new HttpClient())
+        {
+            HttpResponseMessage response = await client.GetAsync($"https://openlibrary.org/{key}.json");
 
-        string response = await client.GetStringAsync($"https://openlibrary.org/{key}.json");
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                sb.Append(await response.Content.ReadAsStringAsync());
+            }
+        }
 
-        Author author = JsonSerializer.Deserialize<Author>(response);
+        string authorJson = sb.ToString();
+
+        Author author = JsonSerializer.Deserialize<Author>(authorJson);
 
         return author;
     }
