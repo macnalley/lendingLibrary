@@ -7,13 +7,15 @@ namespace LendingLibraryWeb.CodeLibraries;
 
 public static class OpenLibrary
 {
-    public static async Task<Book> GetBookByIsbn(string isbn)
+    public static async Task<Book> GetBookByIsbnAsync(string isbn)
     {       
         var openLibraryBook = await GetOpenLibraryBookAsync(isbn);
 
-        var author = GetAuthorAsync(openLibraryBook);
+        var author = await GetAuthorAsync(openLibraryBook);
         
         var book = new Book();
+
+        MapToBook(book, openLibraryBook, author);
 
         return book;
     }
