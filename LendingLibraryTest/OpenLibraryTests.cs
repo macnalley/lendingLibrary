@@ -10,16 +10,20 @@ public class OpenLibraryTests
     [TestMethod]
     public async Task GetOpenLibraryBookTestIsbn10()
     {
-        int isbn = 0140328726;
+        string isbn = "0140328726";
         OpenLibraryBook olBook = await OpenLibrary.GetOpenLibraryBookAsync(isbn);
 
         Assert.AreEqual("Fantastic Mr. Fox", olBook.title);
-
     }
 
-    // public void GetOpenLibraryBookTestIsbn13()
-    // {
-    // }
+    [TestMethod]
+    public async Task GetOpenLibraryBookTestIsbn13()
+    {
+        string isbn = "9780140328721";
+        OpenLibraryBook olBook = await OpenLibrary.GetOpenLibraryBookAsync(isbn);
+
+        Assert.AreEqual("Fantastic Mr. Fox", olBook.title);
+    }
 
     // [TestMethod]
     // public void GetAuthorTest()

@@ -6,8 +6,8 @@ public class BookModel
 {
     public string Title { get; set; }
     public string Author { get; set; }
-    public int Isbn10 { get; set; }
-    public int Isbn13 { get; set; }
+    public string Isbn10 { get; set; }
+    public string Isbn13 { get; set; }
     public string CoverUrl 
     { 
         get

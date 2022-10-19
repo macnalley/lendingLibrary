@@ -1,11 +1,13 @@
 using LendingLibraryWeb.Data.Entities;
 using System.Text.Json;
+using System.Net;
+using System.Text;
 
 namespace LendingLibraryWeb.CodeLibraries;
 
 public static class OpenLibrary
 {
-    public static async Task<Book> GetBookByIsbn(int isbn)
+    public static async Task<Book> GetBookByIsbn(string isbn)
     {       
         var openLibraryBook = await GetOpenLibraryBookAsync(isbn);
 
@@ -16,13 +18,31 @@ public static class OpenLibrary
         return book;
     }
 
-    public static async Task<OpenLibraryBook>GetOpenLibraryBookAsync(int isbn)
+    public static async Task<OpenLibraryBook>GetOpenLibraryBookAsync(string isbn)
     {
-        var client = new HttpClient();
+        var sb = new StringBuilder();
+        
+        using (var client = new HttpClient())
+        {
+            HttpResponseMessage response = await client.GetAsync($"https://openlibrary.org/isbn/{isbn}.json");
+            
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                sb.Append(await response.Content.ReadAsStringAsync());
+            }
+            else if (response.StatusCode == HttpStatusCode.Found)
+            {
+                string redirect = response.Headers.Location.ToString();
+            
+                response = await client.GetAsync(redirect);
 
-        string response = await client.GetStringAsync($"https://openlibrary.org/isbn/{isbn}.json");
+                sb.Append(await response.Content.ReadAsStringAsync());
+            }
+        }
 
-        OpenLibraryBook openLibraryBook = JsonSerializer.Deserialize<OpenLibraryBook>(response);
+        string bookJson = sb.ToString();
+
+        OpenLibraryBook openLibraryBook = JsonSerializer.Deserialize<OpenLibraryBook>(bookJson);
 
         return openLibraryBook;
     }
@@ -41,16 +61,9 @@ public static class OpenLibrary
     public static void MapToBook(Book book, OpenLibraryBook openLibraryBook, Author author)
     {
         book.Title = openLibraryBook.title;
-
         book.Author = author.name;
-        
-        int isbn10 = 0;
-        int.TryParse(openLibraryBook.isbn_10[0], out isbn10);
-        book.Isbn10 = isbn10;
-
-        int isbn13 = 0;
-        int.TryParse(openLibraryBook.isbn_13[0], out isbn13);
-        book.Isbn13 = isbn13;
+        book.Isbn10 = openLibraryBook.isbn_10[0];
+        book.Isbn13 = openLibraryBook.isbn_13[0];
     }
 }
 
