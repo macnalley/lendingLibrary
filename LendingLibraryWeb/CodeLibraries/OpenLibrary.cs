@@ -11,7 +11,7 @@ public static class OpenLibrary
     {       
         var openLibraryBook = await GetOpenLibraryBookAsync(isbn);
 
-        var author = GetAuthorAsync(openLibraryBook.authors[0].key);
+        var author = GetAuthorAsync(openLibraryBook);
         
         var book = new Book();
 
@@ -47,8 +47,10 @@ public static class OpenLibrary
         return openLibraryBook;
     }
 
-    public static async Task<Author> GetAuthorAsync(string key)
+    public static async Task<Author> GetAuthorAsync(OpenLibraryBook openLibraryBook)
     {
+        string key = openLibraryBook.authors[0].key;
+        
         var client = new HttpClient();
 
         string response = await client.GetStringAsync($"https://openlibrary.org/{key}.json");

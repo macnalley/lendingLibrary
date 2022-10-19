@@ -25,10 +25,17 @@ public class OpenLibraryTests
         Assert.AreEqual("Fantastic Mr. Fox", olBook.title);
     }
 
-    // [TestMethod]
-    // public void GetAuthorTest()
-    // {
-    // }
+    [TestMethod]
+    public async Task GetAuthorTest()
+    {
+        string isbn = "0140328726";
+        OpenLibraryBook olBook = await OpenLibrary.GetOpenLibraryBookAsync(isbn);
+
+        Author author = await OpenLibrary.GetAuthorAsync(olBook);
+
+        Assert.AreEqual("Roald Dahl", author.name);
+
+    }
 
     // [TestMethod]
     // public void BookMapperTest()
