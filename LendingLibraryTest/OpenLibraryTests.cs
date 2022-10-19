@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using LendingLibraryWeb.CodeLibraries;
+using static LendingLibraryWeb.CodeLibraries.OpenLibrary;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using LendingLibraryWeb.Data.Entities;
@@ -16,7 +16,7 @@ public class OpenLibraryTests
     [TestMethod]
     public async Task GetOpenLibraryBookTestIsbn10()
     {
-        OpenLibrary.OpenLibraryBook olBook = await OpenLibrary.GetOpenLibraryBookAsync(_isbn10);
+        OpenLibraryBook olBook = await GetOpenLibraryBookAsync(_isbn10);
 
         Assert.AreEqual("Fantastic Mr. Fox", olBook.title);
     }
@@ -24,7 +24,7 @@ public class OpenLibraryTests
     [TestMethod]
     public async Task GetOpenLibraryBookTestIsbn13()
     {
-        OpenLibrary.OpenLibraryBook olBook = await OpenLibrary.GetOpenLibraryBookAsync(_isbn13);
+        OpenLibraryBook olBook = await GetOpenLibraryBookAsync(_isbn13);
 
         Assert.AreEqual("Fantastic Mr. Fox", olBook.title);
     }
@@ -34,16 +34,16 @@ public class OpenLibraryTests
     {
         
         // Arranging mock book with Roald Dahl's key.
-        var olBook = new OpenLibrary.OpenLibraryBook
+        var olBook = new OpenLibraryBook
         {
-            authors = new List<OpenLibrary.Author>
+            authors = new List<Author>
             {
-                new OpenLibrary.Author { key = "/authors/OL34184A" }
+                new Author { key = "/authors/OL34184A" }
             }
         };
 
         // Act
-        OpenLibrary.Author author = await OpenLibrary.GetAuthorAsync(olBook);
+        Author author = await GetAuthorAsync(olBook);
 
         // Assert
         Assert.AreEqual("Roald Dahl", author.name);
@@ -53,7 +53,7 @@ public class OpenLibraryTests
     [TestMethod]
     public async Task GetBookTest()
     {        
-        Book book = await OpenLibrary.GetBookByIsbnAsync(_isbn10);
+        Book book = await GetBookByIsbnAsync(_isbn10);
 
         Assert.AreEqual("Fantastic Mr. Fox", book.Title);
         Assert.AreEqual("Roald Dahl", book.Author);
