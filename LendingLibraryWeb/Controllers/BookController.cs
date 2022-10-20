@@ -1,4 +1,6 @@
+using LendingLibraryWeb.CodeLibraries;
 using LendingLibraryWeb.Data;
+using LendingLibraryWeb.Data.Entities;
 using LendingLibraryWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,30 +28,26 @@ public class BookController : Controller
         
         
         
-        return RedirectToAction("Details");
+        return RedirectToAction("Index");
     }
 
-    public async Task<IActionResult> AddByIsbn(int isbn)
+    public async Task<IActionResult> AddByIsbn(string isbn)
     {
-        if (isbn.ToString().Length == 10 || isbn.ToString().Length == 13)
+        if (isbn.Length == 10 || isbn.Length == 13)
         {
+            Book book = await OpenLibrary.GetBookByIsbnAsync(isbn);
+
+            BookModel bookModel = book.MaptoBookModel();       
             
-            
-            
-            
-            
-            return RedirectToAction("Add");
+            return RedirectToAction("Add", bookModel);
         }
         else 
         {
             var bookModel = new BookModel();
             bookModel.ErrorMessage = "The ISBN must be either 10 or 13 digits.";
 
-            return View(bookModel);
-        }
-        
-        
-        
+            return RedirectToAction("Add", bookModel);
+        }     
     }
 
     public async Task<IActionResult> Details(int id)

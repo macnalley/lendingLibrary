@@ -49,7 +49,7 @@ public static class OpenLibrary
         return openLibraryBook;
     }
 
-    public static async Task<Author> GetAuthorAsync(OpenLibraryBook openLibraryBook)
+    public  static async Task<Author> GetAuthorAsync(OpenLibraryBook openLibraryBook)
     {
         string key = openLibraryBook.authors[0].key;
         
