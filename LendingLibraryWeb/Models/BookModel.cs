@@ -9,9 +9,9 @@ public class BookModel
     public string Title { get; set; }
     [Required]
     public string Author { get; set; }
-    [Required]
+    [Required, StringLength(10)]
     public string Isbn10 { get; set; }
-    [Required]
+    [Required, StringLength(13)]
     public string Isbn13 { get; set; }
     public string CoverUrl 
     { 

@@ -18,9 +18,9 @@ public class BookController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var books = await _context.Books.ToListAsync();
+        // var books = await _context.Books.ToListAsync();
         
-        return View(books);
+        return View();
     }
 
     public async Task<IActionResult> Add(BookModel model)
@@ -28,25 +28,35 @@ public class BookController : Controller
         
         
         
-        return RedirectToAction("Index");
+        return View();
     }
 
-    public async Task<IActionResult> AddByIsbn(string isbn)
-    {
-        if (isbn.Length == 10 || isbn.Length == 13)
+    public async Task<IActionResult> GetInfoByIsbn(string isbn)
+    {        
+        try
         {
-            Book book = await OpenLibrary.GetBookByIsbnAsync(isbn);
+            if (isbn.Length == 10 || isbn.Length == 13)
+            {
+                Book book = await OpenLibrary.GetBookByIsbnAsync(isbn);
 
-            BookModel bookModel = book.MaptoBookModel();       
-            
-            return RedirectToAction("Add", bookModel);
+                BookModel bookModel = book.MaptoBookModel();       
+                
+                return RedirectToAction("Add", bookModel);
+            }
+            else 
+            {
+                var bookModel = new BookModel();
+                bookModel.ErrorMessage = "The ISBN must be either 10 or 13 digits.";
+
+                return RedirectToAction("Add", bookModel);
+            }
         }
-        else 
-        {
+        catch (System.Exception)
+        {  
             var bookModel = new BookModel();
-            bookModel.ErrorMessage = "The ISBN must be either 10 or 13 digits.";
+            bookModel.ErrorMessage = "No book found.";
 
-            return RedirectToAction("Add", bookModel);
+            return RedirectToAction("Add", bookModel);;
         }     
     }
 
