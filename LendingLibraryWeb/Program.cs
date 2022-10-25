@@ -1,5 +1,5 @@
-using LendingLibraryWeb.CodeLibraries;
 using LendingLibraryWeb.Data;
+using LendingLibraryWeb.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<LibraryContext>();
+builder.Services.AddSingleton<IBookRepository, BookRepository>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
 var app = builder.Build();

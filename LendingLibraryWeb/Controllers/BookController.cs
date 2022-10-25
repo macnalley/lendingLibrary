@@ -1,6 +1,7 @@
 using LendingLibraryWeb.CodeLibraries;
 using LendingLibraryWeb.Data;
 using LendingLibraryWeb.Data.Entities;
+using LendingLibraryWeb.Data.Repositories;
 using LendingLibraryWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,26 +10,55 @@ namespace LendingLibraryWeb.Controllers;
 
 public class BookController : Controller
 {
-    private readonly LibraryContext _context;
+    private readonly IBookRepository _bookRepository;
 
-    public BookController(LibraryContext context)
+    public BookController(IBookRepository bookRepository)
     {
-        _context = context;
+        _bookRepository = bookRepository;
     }
 
     public async Task<IActionResult> Index()
     {
-        // var books = await _context.Books.ToListAsync();
-        
+        var books = await _bookRepository.GetBooksAsync();
+
+        return View(books);
+    }
+
+    public async Task<IActionResult> Add()
+    {      
         return View();
     }
 
+    [HttpPost]
     public async Task<IActionResult> Add(BookModel model)
+    {      
+        if (ModelState.IsValid)
+            {
+                Book book = model.MapToBook();
+
+               await _bookRepository.AddBookAsync(book);
+               await _bookRepository.SaveAsync();
+               return RedirectToAction("Index");
+            }
+
+            return View(model);
+
+    }
+
+    public async Task<IActionResult> Details(int id)
     {
+        Book book = await _bookRepository.GetBookByIdAsync(id);
         
-        
-        
-        return View();
+        return View(book);
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _bookRepository.DeleteBookAsync(id);
+        await _bookRepository.SaveAsync();
+
+        return RedirectToAction("Index");
     }
 
     public async Task<IActionResult> GetInfoByIsbn(string isbn)
@@ -58,10 +88,5 @@ public class BookController : Controller
 
             return RedirectToAction("Add", bookModel);;
         }     
-    }
-
-    public async Task<IActionResult> Details(int id)
-    {
-        return View();
     }
 }

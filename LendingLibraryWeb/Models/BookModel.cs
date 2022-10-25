@@ -23,12 +23,26 @@ public class BookModel
     public bool IsAvailable { get; set; }
     public string? ErrorMessage { get; set; }
 
-    public void MapToBook(Book book)
+    public void MapFromBook(Book book)
     {
         Title = book.Title;
         Author = book.Author;
         Isbn10 = book.Isbn10;
         Isbn13 = book.Isbn13;
         IsAvailable = book.IsAvailable;
+    }
+
+    public Book MapToBook()
+    {
+        var book = new Book
+        {
+            Title = this.Title,
+            Author = this.Author,
+            Isbn10 = this.Isbn10,
+            Isbn13 = this.Isbn13,
+            IsAvailable = this.IsAvailable
+        };
+        
+        return book;
     }
 }
